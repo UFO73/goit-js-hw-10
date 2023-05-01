@@ -4,22 +4,21 @@ import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchCountries } from './js/fetchCountries.js';
 
-const DEBOUNCE_DELAY = 500;
+const DEBOUNCE_DELAY = 300;
 const refs = {
-  querry: document.querySelector('#search-box'),
+  querryInput: document.querySelector('#search-box'),
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
 };
 
-refs.querry.addEventListener(
-  'input',
-  debounce(onInputGetQuerry, DEBOUNCE_DELAY)
+refs.querryInput.addEventListener(
+  'input', debounce(onInputGetQuerry, DEBOUNCE_DELAY)
 );
 
 function onInputGetQuerry() {
-  refs.querry.value = refs.querry.value.trim();
-  if (refs.querry.value) {
-    fetchCountries(refs.querry.value)
+  refs.querryInput.value = refs.querryInput.value.trim();
+  if (refs.querryInput.value) {
+    fetchCountries(refs.querryInput.value)
       .then(checkOutput)
       .catch(eggog => {
         clearFields();
@@ -50,31 +49,19 @@ function checkOutput(inputData) {
 }
 
 function makeList(inputData) {
-  return inputData
-    .map(
-      ({ flags: { svg, alt }, name: { official } }) => `<li><div class="title">
-  <img src="${svg}" alt="${alt}">
-  <h2>${official}</h2></div>
-</li>`
-    )
-    .join('');
+  return inputData.map(({ flags: { svg, alt }, name: { official } }) => `<li><div class="title"><img src="${svg}" alt="${alt}"><h2>${official}</h2></div></li>`).join('');
 }
 
 function makeInfo(inputData) {
-  return inputData
-    .map(
-      ({
-        capital,
-        population,
-        flags: { svg, alt },
-        name: { official },
-        languages,
-      }) => `<div class="title">
+  return inputData.map(({capital,population,flags: { svg, alt },name: { official },languages,}) => `<div class="title">
   <img src="${svg}" alt="${alt}">
   <h2>${official}</h2></div>
-  <div class="details"><h3>Capital:</h3><p>${capital}</p>
+  <div"><h3>Capital:</h3><p>${capital}</p>
   <h3>Population:</h3><p>${population}</p>
   <h3>Languages:</h3><p>${Object.values(languages).toString()}</p>
-  </div>`
-    ).join('');
+  </div>`).join('');
 }
+
+
+
+
