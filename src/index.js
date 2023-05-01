@@ -76,6 +76,5 @@ function makeInfo(inputData) {
   <h3>Population:</h3><p>${population}</p>
   <h3>Languages:</h3><p>${Object.values(languages).toString()}</p>
   </div>`
-    )
-    .join('');
+    ).join('');
 }
